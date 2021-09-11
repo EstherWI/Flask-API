@@ -1,6 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
+from flask_socketio import SocketIO, emit, send
+from PyQt5 import QtWidgets
+import sys
+
 
 app = Flask(__name__)
+io = SocketIO(app)
 
 class Paciente:
     def __init__(self, cpf, temp, freq, pressao, resp):
@@ -12,6 +17,15 @@ class Paciente:
 
 p = Paciente(1,1,1,1,1)
 lista = [p]
+
+@io.on('conectPatient')
+def send_message_handler(p):
+    lista.append(p)
+    emit('getData', p, broadcast=True)
+
+@io.on('patients')
+def message_handler(msg):
+    send(lista)
 
 @app.route('/')
 def raiz():
@@ -36,4 +50,4 @@ def criar():
     lista.append(paciente)
     return redirect(url_for('patient'))
 
-app.run(debug=True)
+io.run(app, debug=True)

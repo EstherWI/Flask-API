@@ -26,7 +26,7 @@
             <header style="text-align: center;">
               <h3>Covid-19</h3>
             </header>
-            <form action="{{ url_for('criar') }}" method="POST">
+            <form>
               <div class="form-group">
                 <label for="cpf">CPF</label>
                 <input class="form-control" id="cpf" name="cpf" placeholder="">
@@ -51,6 +51,39 @@
                 <button type="submit"  class="btn btn-primary">Enviar</button>
               </div>
             </form>
+            <script>
+              window.onload = function() {
+                  const socket = io('http://127.0.0.1:5000');
+      
+                  function addList(patient) {
+                      const span = document.createElement("span");
+                      const list = document.querySelector(".list");
+                      list.append(span);
+                  }
+      
+                  socket.on('connect', () => {
+                      socket.send('Usuário conectado ao socket!')
+                  });
+      
+                  document.querySelector("form").addEventListener("submit", function(event) {
+                      event.preventDefault();
+                      socket.emit('conectPatient', {cpf: event.target[0].value, temp: event.target[1].value, batimentos: event.target[2].value, pressao: event.target[3].value, resp: event.target[4].value})
+                  })
+      
+                  socket.on('patients', (msg) => {
+                      addToChat(msg)
+                  })
+      
+                  
+                  socket.on('patients', (msgs) => {
+                      for(msg of msgs) {
+                          addToChat(msg)
+                      }
+                  })
+      
+              }
+      
+          </script>
           </section>
 
         </div>
