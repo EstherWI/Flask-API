@@ -1,4 +1,4 @@
-# PBL-2020.1-Autorama
+# PBL1 - Sistema de Monitoramento de COVID-19
 
 ### Pré-requisitos
 
