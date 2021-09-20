@@ -20,7 +20,7 @@ $ venv\Scripts\activate
 $ pip install -r requirements.txt
 ```
 
-# Para executar a aplicação dentro do ambiente virtual
+### Para executar a aplicação dentro do ambiente virtual
 $ python main.py
 
 
